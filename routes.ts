@@ -38,6 +38,7 @@ import removeAllClients from './router/admin/client/removeAllClients';
 import removeClient from './router/admin/client/removeClient';
 import SearchClientByName from './router/admin/client/searchByName';
 import SearchClientByPhone from './router/admin/client/searchByPhone';
+import searchComplete from './router/admin/client/searchComplete';
 import loginAdmin from './router/admin/login';
 import call from './router/admin/stats/call';
 import callByDate from './router/admin/stats/callByDate';
@@ -80,9 +81,10 @@ router.post('/otherCaller/info', OtherCallerInfo);
 
 //admin/client
 router.post('/admin/client/createClients', createClients);
-router.post('/admin/client/searchByName', SearchClientByName);
 router.post('/admin/client/removeClient', removeClient);
+router.post('/admin/client/searchByName', SearchClientByName);
 router.post('/admin/client/searchByPhone', SearchClientByPhone);
+router.post('/admin/client/searchComplete', searchComplete);
 router.post('/admin/client/removeClients', removeAllClients);
 router.post('/admin/client/createClient', createClient);
 router.post('/admin/client/clientInfo', clientInfo);

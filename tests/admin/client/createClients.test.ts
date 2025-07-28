@@ -99,7 +99,8 @@ describe('post on /admin/client/createClients', () => {
 			.send({ adminCode: 'password', area: areaId, data: ['not an object'] });
 		expect(res.status).toEqual(400);
 		expect(res.body).toEqual({
-			message: 'Each data entry must be an object with valid properties',
+			message:
+				'Each data entry must be an object with valid properties: {phone:string, name?:string, firstname?:string, institution?:string, priority?:string, firstIntegration?:date, integrationReason?:string}',
 			OK: false
 		});
 	});

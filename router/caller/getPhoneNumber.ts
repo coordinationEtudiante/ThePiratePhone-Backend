@@ -291,7 +291,6 @@ export default async function getPhoneNumber(req: Request<any>, res: Response<an
 		},
 		['status', 'satisfaction', 'duration', 'comment', 'start']
 	);
-	console.log(campaign.sortGroup, (client[0] as any).priority);
 	res.status(200).send({
 		message: 'Client to call',
 		OK: true,
