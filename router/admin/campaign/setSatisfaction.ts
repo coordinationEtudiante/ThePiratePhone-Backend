@@ -72,9 +72,17 @@ export default async function setSatisfaction(req: Request<any>, res: Response<a
 		return;
 	}
 
-	if (!req.body.satisfactions.every((e: any) => typeof e?.name == 'string' && typeof e?.toRecall == 'boolean')) {
+	if (
+		!req.body.satisfactions.every(
+			(e: any) =>
+				typeof e?.name === 'string' &&
+				typeof e?.toRecall === 'boolean' &&
+				!e?.name.includes('[hide] validate by API')
+		)
+	) {
 		res.status(400).send({
-			message: 'Invalid satisfaction, satisfactions must be a array<{ name: String, toRecall: Boolean }>',
+			message:
+				'Invalid satisfaction, satisfactions must be a array<{ name: String, toRecall: Boolean }> name dont contain "[hide] validate by API"',
 			OK: false
 		});
 		log(`[${req.body.area}, ${ip}] Invalid satisfaction`, 'WARNING', __filename);
@@ -85,6 +93,8 @@ export default async function setSatisfaction(req: Request<any>, res: Response<a
 		name: sanitizeString(e.name),
 		toRecall: e.toRecall
 	}));
+
+	req.body.satisfactions.push({ name: '[hide] validate by API', toRecall: false });
 
 	await Campaign.updateOne({ _id: campaign._id }, { status: req.body.satisfactions });
 	res.status(200).send({ message: 'Satisfaction updated', OK: true });

@@ -80,7 +80,8 @@ describe('post on /admin/login', () => {
 				actualCampaignCallPermited: true,
 				actualCampaignStatus: [
 					{ name: 'À rappeler', toRecall: true },
-					{ name: 'À retirer', toRecall: false }
+					{ name: 'À retirer', toRecall: false },
+					{ name: '[hide] validate by API', toRecall: false }
 				]
 			},
 			OK: true
@@ -105,7 +106,8 @@ describe('post on /admin/login', () => {
 				actualCampaignCallPermited: true,
 				actualCampaignStatus: [
 					{ name: 'À rappeler', toRecall: true },
-					{ name: 'À retirer', toRecall: false }
+					{ name: 'À retirer', toRecall: false },
+					{ name: '[hide] validate by API', toRecall: false }
 				]
 			},
 			OK: true

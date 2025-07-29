@@ -90,7 +90,22 @@ describe('post on /admin/campaign/setSatisfaction', () => {
 			});
 		expect(res.status).toBe(400);
 		expect(res.body.message).toBe(
-			'Invalid satisfaction, satisfactions must be a array<{ name: String, toRecall: Boolean }>'
+			'Invalid satisfaction, satisfactions must be a array<{ name: String, toRecall: Boolean }> name dont contain "[hide] validate by API"'
+		);
+	});
+
+	it('should return 400 if satisfactions is "[hide] validate by API"', async () => {
+		const res = await request(app)
+			.post('/admin/campaign/setSatisfaction')
+			.send({
+				adminCode,
+				area: areaId,
+				allreadyHaseded: true,
+				satisfactions: [{ name: '[hide] validate by API', toRecall: false }]
+			});
+		expect(res.status).toBe(400);
+		expect(res.body.message).toBe(
+			'Invalid satisfaction, satisfactions must be a array<{ name: String, toRecall: Boolean }> name dont contain "[hide] validate by API"'
 		);
 	});
 
@@ -110,7 +125,8 @@ describe('post on /admin/campaign/setSatisfaction', () => {
 		const campaign = await Campaign.findOne({ _id: CampaignId });
 		expect(campaign?.status).toMatchObject([
 			{ name: 'satisfaction1', toRecall: true },
-			{ name: 'satisfaction2', toRecall: true }
+			{ name: 'satisfaction2', toRecall: true },
+			{ name: '[hide] validate by API', toRecall: false }
 		]);
 	});
 });
