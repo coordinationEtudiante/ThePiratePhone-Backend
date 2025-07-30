@@ -242,7 +242,6 @@ export default async function getPhoneNumber(req: Request<any>, res: Response<an
 
 			//keep only the first client
 			{ $limit: 1 },
-
 			// Return only selected fields
 			{
 				$project: {

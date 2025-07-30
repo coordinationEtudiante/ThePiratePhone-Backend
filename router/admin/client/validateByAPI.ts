@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 
+import { Call } from '../../../Models/Call';
 import { Area } from '../../../Models/Area';
 import { Campaign } from '../../../Models/Campaign';
 import { log } from '../../../tools/log';
-import { checkParameters, hashPasword, partialShearchClient } from '../../../tools/utils';
+import { checkParameters, getApiCaller, hashPasword, partialShearchClient, sanitizeString } from '../../../tools/utils';
 
 /**
  * Search for clients with name, fist name and patial phone
@@ -26,7 +27,7 @@ import { checkParameters, hashPasword, partialShearchClient } from '../../../too
  * @throws {401} Wrong admin code
  * @throws {200} OK
  */
-export default async function searchComplete(req: Request<any>, res: Response<any>) {
+export default async function validateByAPI(req: Request<any>, res: Response<any>) {
 	const ip =
 		(Array.isArray(req.headers['x-forwarded-for'])
 			? req.headers['x-forwarded-for'][0]
@@ -38,10 +39,11 @@ export default async function searchComplete(req: Request<any>, res: Response<an
 			[
 				['name', 'string'],
 				['firstName', 'string'],
-				['phoneFragmentStart', 'string', true],
-				['phoneFragmentEnd', 'string', true],
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
+				['comment', 'string'],
+				['phoneFragmentStart', 'string', true],
+				['phoneFragmentEnd', 'string', true],
 				['CampaignId', 'string', true],
 				['allreadyHaseded', 'boolean', true]
 			],
@@ -66,6 +68,12 @@ export default async function searchComplete(req: Request<any>, res: Response<an
 		campaign = await Campaign.findOne({ area: area._id, active: true }, ['_id']);
 	}
 
+	if (!campaign) {
+		res.status(404).send({ message: 'No campaign in progress', OK: false });
+		log(`[!${req.body.area}, ${ip}] No campaign in progress`, 'WARNING', __filename);
+		return;
+	}
+
 	const result = await partialShearchClient(
 		campaign,
 		req.body.name,
@@ -74,10 +82,30 @@ export default async function searchComplete(req: Request<any>, res: Response<an
 		req.body.phoneFragmentEnd
 	);
 
-	res.status(result.OK ? 200 : 404).send(result);
-	log(
-		`[${req.body.area}, ${ip}] ${result.OK ? 'no clients found on second pass' : 'client found'}`,
-		'INFO',
-		__filename
-	);
+	if (!result.OK || !result.data || !result.data['_id']) {
+		res.status(404).send(result);
+		log(`[${req.body.area}, ${ip}] no clients found on second pass`, 'INFO', __filename);
+		return;
+	}
+
+	const APICaller = await getApiCaller();
+	const call = await new Call({
+		client: result.data._id,
+		caller: APICaller._id,
+		campaign: campaign._id,
+		satisfaction: '[hide] validate by API',
+		comment: sanitizeString(req.body.comment),
+		status: false,
+		start: new Date(),
+		duration: 0
+	}).save();
+
+	if (!call) {
+		res.status(500).send({ message: 'Internal error when creating validation call', OK: false });
+		log(`[${req.body.area}, ${ip}] Internal error when creating validation call`, 'CRITICAL', __filename);
+		return;
+	}
+
+	res.status(200).send({ message: 'this client has been validate', OK: true });
+	log(`[${req.body.area}, ${ip}] client ${result.data._id} has ben validate`, 'INFO', __filename);
 }
