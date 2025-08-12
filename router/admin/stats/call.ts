@@ -64,8 +64,6 @@ export default async function call(req: Request<any>, res: Response<any>) {
 		return;
 	}
 
-	console.log(campaign._id);
-
 	const result = await Call.aggregate([
 		{
 			$match: {
@@ -130,10 +128,8 @@ export default async function call(req: Request<any>, res: Response<any>) {
 		}
 	]);
 
-	// Compte des utilisateurs dans la campagne
 	const totalUser = await Client.countDocuments({ campaigns: campaign });
 
-	console.log(await result);
 	res.status(200).send({
 		message: 'OK',
 		OK: true,

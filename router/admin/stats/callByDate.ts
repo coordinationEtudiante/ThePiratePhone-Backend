@@ -66,8 +66,14 @@ export default async function callByDate(req: Request<any>, res: Response<any>) 
 	res.setHeader('Transfer-Encoding', 'chunked');
 	res.write('{ "data": [');
 
-	const NbCall = await Call.countDocuments({ campaign: campaign._id });
-	let i = 0;
+	const NbCall = await Call.countDocuments({
+		campaign: campaign._id,
+		satisfaction: {
+			$not: { $regex: /^\[hide\]/ }
+		},
+		$expr: { $ne: ['$satisfaction', null] }
+	});
+
 	await Call.find({
 		campaign: campaign._id,
 		satisfaction: {
@@ -76,7 +82,7 @@ export default async function callByDate(req: Request<any>, res: Response<any>) 
 		$expr: { $ne: ['$satisfaction', null] }
 	})
 		.cursor()
-		.eachAsync(call => {
+		.eachAsync((call, i) => {
 			res.write(
 				JSON.stringify({
 					date: call.start ?? 0,
@@ -84,7 +90,6 @@ export default async function callByDate(req: Request<any>, res: Response<any>) 
 					satisfaction: call.satisfaction
 				}) + (NbCall - 1 == i ? '' : ',')
 			);
-			i++;
 		});
 	res.write(']}');
 	res.end();
