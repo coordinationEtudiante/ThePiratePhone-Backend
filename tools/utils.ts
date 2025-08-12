@@ -253,7 +253,7 @@ function hashPasword(password: string, allreadyHaseded: boolean, res: Response<a
 	return password;
 }
 
-async function partialShearchClient(
+async function partialSearchClient(
 	campaign: InstanceType<typeof Campaign> | null,
 	name: string,
 	firstName: string,
@@ -362,7 +362,7 @@ export {
 	getFileName,
 	hashPasword,
 	humainPhone,
-	partialShearchClient,
+	partialSearchClient,
 	phoneNumberCheck,
 	sanitizeString
 };

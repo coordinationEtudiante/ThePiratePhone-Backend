@@ -68,7 +68,13 @@ export default async function callByDate(req: Request<any>, res: Response<any>) 
 
 	const NbCall = await Call.countDocuments({ campaign: campaign._id });
 	let i = 0;
-	await Call.find({ campaign: campaign._id })
+	await Call.find({
+		campaign: campaign._id,
+		satisfaction: {
+			$not: { $regex: /^\[hide\]/ }
+		},
+		$expr: { $ne: ['$satisfaction', null] }
+	})
 		.cursor()
 		.eachAsync(call => {
 			res.write(

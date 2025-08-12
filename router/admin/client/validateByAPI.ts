@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 
-import { Call } from '../../../Models/Call';
 import { Area } from '../../../Models/Area';
+import { Call } from '../../../Models/Call';
 import { Campaign } from '../../../Models/Campaign';
 import { log } from '../../../tools/log';
-import { checkParameters, getApiCaller, hashPasword, partialShearchClient, sanitizeString } from '../../../tools/utils';
+import { checkParameters, getApiCaller, hashPasword, partialSearchClient, sanitizeString } from '../../../tools/utils';
 
 /**
  * Search for clients with name, fist name and patial phone
@@ -74,7 +74,7 @@ export default async function validateByAPI(req: Request<any>, res: Response<any
 		return;
 	}
 
-	const result = await partialShearchClient(
+	const result = await partialSearchClient(
 		campaign,
 		req.body.name,
 		req.body.firstName,
@@ -86,6 +86,12 @@ export default async function validateByAPI(req: Request<any>, res: Response<any
 		res.status(404).send(result);
 		log(`[${req.body.area}, ${ip}] no clients found on second pass`, 'INFO', __filename);
 		return;
+	}
+
+	const allreadyCalled = await Call.findOne({ client: result.data._id, campaign: campaign._id, status: false });
+
+	if (allreadyCalled) {
+		res.status(200).send('this client is already called by an reel caller');
 	}
 
 	const APICaller = await getApiCaller();

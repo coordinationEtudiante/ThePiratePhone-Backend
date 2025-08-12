@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { Area } from '../../../Models/Area';
 import { Campaign } from '../../../Models/Campaign';
 import { log } from '../../../tools/log';
-import { checkParameters, hashPasword, partialShearchClient } from '../../../tools/utils';
+import { checkParameters, hashPasword, partialSearchClient } from '../../../tools/utils';
 
 /**
  * Search for clients with name, fist name and patial phone
@@ -66,7 +66,7 @@ export default async function searchComplete(req: Request<any>, res: Response<an
 		campaign = await Campaign.findOne({ area: area._id, active: true }, ['_id']);
 	}
 
-	const result = await partialShearchClient(
+	const result = await partialSearchClient(
 		campaign,
 		req.body.name,
 		req.body.firstName,
