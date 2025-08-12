@@ -264,10 +264,10 @@ async function partialSearchClient(
 	OK: boolean;
 	data?: { [key: string]: any };
 }> {
-	const searchName = name?.trim();
-	const searchFirstName = firstName?.trim();
-	let phoneStart = phoneFragmentStart?.trim();
-	let phoneEnd = phoneFragmentEnd?.trim();
+	const searchName = sanitizeString(name?.trim());
+	const searchFirstName = sanitizeString(firstName?.trim());
+	let phoneStart = sanitizeString(phoneFragmentStart?.trim() ?? '');
+	let phoneEnd = sanitizeString(phoneFragmentEnd?.trim() ?? '');
 
 	const query: any = { campaigns: campaign };
 

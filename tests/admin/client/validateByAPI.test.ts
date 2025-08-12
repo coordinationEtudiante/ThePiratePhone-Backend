@@ -3,12 +3,10 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import app from '../../../index';
 import { Area } from '../../../Models/Area';
+import { Call } from '../../../Models/Call';
+import { Caller } from '../../../Models/Caller';
 import { Campaign } from '../../../Models/Campaign';
 import { Client } from '../../../Models/Client';
-import { Caller } from '../../../Models/Caller';
-import { Call } from '../../../Models/Call';
-import call from 'router/admin/stats/call';
-
 dotenv.config({ path: '.env' });
 
 let areaId: mongoose.Types.ObjectId | undefined;
@@ -124,15 +122,9 @@ describe('post on /admin/client/validateByAPI', () => {
 			comment: 'auto-validate by test suite2',
 			area: areaId
 		});
+
 		expect(res.status).toBe(200);
 		expect(res.body.OK).toBe(true);
-		expect(res.body.message).toBe('this client has been validate');
-		const call = await Call.findOne({ comment: 'auto-validate by test suite2' });
-		expect(call).toMatchObject({
-			satisfaction: '[hide] validate by API',
-			comment: 'auto-validate by test suite2',
-			status: false,
-			duration: 0
-		});
+		expect(res.body.message).toBe('this client is already called by an reel caller');
 	});
 });

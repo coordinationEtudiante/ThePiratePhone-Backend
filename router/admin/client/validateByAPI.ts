@@ -83,7 +83,7 @@ export default async function validateByAPI(req: Request<any>, res: Response<any
 	);
 
 	if (!result.OK || !result.data || !result.data['_id']) {
-		res.status(404).send(result);
+		res.status(404).send({ message: 'no clients found on second pass', OK: false });
 		log(`[${req.body.area}, ${ip}] no clients found on second pass`, 'INFO', __filename);
 		return;
 	}
@@ -91,7 +91,7 @@ export default async function validateByAPI(req: Request<any>, res: Response<any
 	const allreadyCalled = await Call.findOne({ client: result.data._id, campaign: campaign._id, status: false });
 
 	if (allreadyCalled) {
-		res.status(200).send('this client is already called by an reel caller');
+		res.status(200).send({ message: 'this client is already called by an reel caller', OK: true });
 	}
 
 	const APICaller = await getApiCaller();
