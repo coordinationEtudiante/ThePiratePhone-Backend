@@ -17,6 +17,7 @@ const adminCode =
 
 beforeAll(async () => {
 	await mongoose.connect(process.env.URITEST ?? '');
+
 	await Area.deleteMany({});
 	await Client.deleteMany({});
 	await Caller.deleteMany({});
@@ -56,6 +57,7 @@ beforeAll(async () => {
 			priority: [{ campaign: campaignId, id: '-1' }]
 		})
 	).id;
+
 	await Client.create({
 		name: 'other',
 		phone: '+33134567891',
@@ -63,7 +65,7 @@ beforeAll(async () => {
 		campaigns: [campaignId],
 		priority: [{ campaign: campaignId, id: '-1' }]
 	});
-	Area.updateOne({ _id: areaId }, { $push: { campaignList: campaignId } });
+	await Area.updateOne({ _id: areaId }, { $push: { campaignList: campaignId } });
 });
 
 afterAll(async () => {
@@ -103,28 +105,5 @@ describe('post on /admin/client/validateByAPI', () => {
 			status: false,
 			duration: 0
 		});
-	});
-
-	it('should works with Caller already exist', async () => {
-		await Caller.deleteMany({});
-		await new Caller({
-			name: 'API Caller',
-			phone: '+33000000000',
-			pinCode: '1970',
-			campaigns: await Campaign.find({}, [])
-		}).save();
-
-		const res = await request(app).post('/admin/client/validateByAPI').send({
-			adminCode,
-			allreadyHaseded: true,
-			name: 'ZRAIKA',
-			firstName: 'Romane',
-			comment: 'auto-validate by test suite2',
-			area: areaId
-		});
-
-		expect(res.status).toBe(200);
-		expect(res.body.OK).toBe(true);
-		expect(res.body.message).toBe('this client is already called by an reel caller');
 	});
 });

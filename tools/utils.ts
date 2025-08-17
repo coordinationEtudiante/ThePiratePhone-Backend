@@ -336,29 +336,11 @@ async function partialSearchClient(
 	}
 }
 
-async function getApiCaller() {
-	let caller: InstanceType<typeof Caller> | null = await Caller.findOne({
-		name: 'API Caller',
-		phone: '+33000000000',
-		pinCode: '1970'
-	});
-	if (!caller) {
-		caller = await new Caller({
-			name: 'API Caller',
-			phone: '+33000000000',
-			pinCode: '1970',
-			campaigns: await Campaign.find({}, [])
-		}).save();
-	}
-
-	return caller;
-}
 export {
 	checkParameters,
 	checkPinCode,
 	cleanStatus,
 	clearPhone,
-	getApiCaller,
 	getFileName,
 	hashPasword,
 	humainPhone,
