@@ -100,7 +100,7 @@ describe('POST /admin/area/sendSms', () => {
 			.post('/admin/area/sendSms')
 			.send({
 				adminCode: adminPassword,
-				allreadyHaseded: true,
+				allreadyHashed: true,
 				area: areaId,
 				phone: [
 					['0701234567', 'John'],

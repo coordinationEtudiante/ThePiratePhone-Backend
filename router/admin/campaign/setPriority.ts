@@ -14,7 +14,7 @@ import { checkParameters, hashPasword, sanitizeString } from '../../../tools/uti
  * 	"priority": Array<{ name: string, id: string(length = 8) }>,
  * 	"area": mongoDBID,
  * 	"CampaignId": mongoDBID,
- * 	"allreadyHaseded": boolean
+ * 	"allreadyHashed": boolean
  * }
  *
  * @throws {400} - Missing parameters
@@ -37,7 +37,7 @@ export default async function setPriority(req: Request<any>, res: Response<any>)
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
 				['CampaignId', 'string', true],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
@@ -53,7 +53,7 @@ export default async function setPriority(req: Request<any>, res: Response<any>)
 		return;
 	}
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const area = await Area.findOne({ _id: { $eq: req.body.area }, adminPassword: { $eq: password } });
 	if (!area) {

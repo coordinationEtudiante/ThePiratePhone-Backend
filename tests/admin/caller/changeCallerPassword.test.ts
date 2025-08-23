@@ -115,7 +115,7 @@ describe('post on /admin/caller/changePassword', () => {
 			newPassword: '1235',
 			Callerphone: '+33234567890',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(response.status).toBe(200);
 		expect(response.body).toMatchObject({ message: 'Password changed', OK: true });

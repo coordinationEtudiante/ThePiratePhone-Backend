@@ -53,7 +53,7 @@ export default async function createClient(req: Request<any>, res: Response<any>
 				['institution', 'string', true],
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
-				['allreadyHaseded', 'boolean', true],
+				['allreadyHashed', 'boolean', true],
 				['updateIfExist', 'boolean', true],
 				['updateKey', 'ObjectId', true],
 				['firstIntegration', 'Date', true],
@@ -63,7 +63,7 @@ export default async function createClient(req: Request<any>, res: Response<any>
 		)
 	)
 		return;
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 
 	if (

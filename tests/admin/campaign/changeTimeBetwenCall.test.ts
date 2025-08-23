@@ -64,7 +64,7 @@ describe('post on /admin/campaign/changeTimeBetwenCall', () => {
 			newTimeBetweenCall: 5,
 			area: areaId,
 			CampaignId: new Types.ObjectId(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.message).toBe('Wrong campaign id');
@@ -75,7 +75,7 @@ describe('post on /admin/campaign/changeTimeBetwenCall', () => {
 			adminCode,
 			newTimeBetweenCall: 40,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body.message).toBe('Invalid time between call');
@@ -95,7 +95,7 @@ describe('post on /admin/campaign/changeTimeBetwenCall', () => {
 			adminCode,
 			newTimeBetweenCall: 60_000,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		const newTimeBetweenCall = (await Campaign.findOne({ _id: campaignId }))?.timeBetweenCall;

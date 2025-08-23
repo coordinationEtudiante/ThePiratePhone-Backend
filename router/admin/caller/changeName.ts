@@ -39,7 +39,7 @@ export default async function ChangeName(req: Request<any>, res: Response<any>) 
 				[`phone`, `string`],
 				[`newName`, `string`],
 				[`area`, `ObjectId`],
-				[`allreadyHaseded`, `boolean`, true]
+				[`allreadyHashed`, `boolean`, true]
 			],
 			__filename
 		)
@@ -59,7 +59,7 @@ export default async function ChangeName(req: Request<any>, res: Response<any>) 
 		return;
 	}
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const area = await Area.findOne({ adminPassword: { $eq: password }, _id: { $eq: req.body.area } });
 	if (!area) {

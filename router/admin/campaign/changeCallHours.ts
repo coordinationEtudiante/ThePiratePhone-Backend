@@ -42,14 +42,14 @@ export default async function changeCallHours(req: Request<any>, res: Response<a
 				['newStartHours', 'string'],
 				['area', 'ObjectId'],
 				['CampaignId', 'string', true],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
 	)
 		return;
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const area = await Area.findOne({ _id: { $eq: req.body.area }, adminPassword: { $eq: password } });
 	if (!area) {

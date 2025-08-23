@@ -68,7 +68,7 @@ describe('post on /admin/campaign/addClientCampaign', () => {
 			phone: 'bad phone number',
 			adminCode,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body).toEqual({ message: 'Wrong phone number', OK: false });
@@ -89,7 +89,7 @@ describe('post on /admin/campaign/addClientCampaign', () => {
 			phone: '+33634567891',
 			adminCode,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body).toEqual({ message: 'User not found', OK: false });
@@ -100,7 +100,7 @@ describe('post on /admin/campaign/addClientCampaign', () => {
 			phone: '+33634567890',
 			adminCode,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body).toEqual({ message: 'Campaign not found', OK: false });
@@ -144,7 +144,7 @@ describe('post on /admin/campaign/addClientCampaign', () => {
 			phone: '+33634567890',
 			adminCode,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body).toEqual({ message: 'User already in campaign', OK: true });
@@ -164,7 +164,7 @@ describe('post on /admin/campaign/addClientCampaign', () => {
 			phone: '+33634567893',
 			adminCode,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body).toEqual({ message: 'User added to campaign', OK: true });

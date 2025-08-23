@@ -14,7 +14,7 @@ import { checkParameters, hashPasword } from '../../../tools/utils';
  * 	CampaignId: ObjectId,
  * 	adminCode: String,
  * 	area: ObjectId,
- * 	"allreadyHaseded": boolean
+ * 	"allreadyHashed": boolean
  * }
  *
  * @throws {400} Missing parameters
@@ -36,13 +36,13 @@ export default async function callByDate(req: Request<any>, res: Response<any>) 
 				['CampaignId', 'string', true],
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
 	)
 		return;
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const area = await Area.findOne({ adminPassword: { $eq: password }, _id: { $eq: req.body.area } }, ['name']);
 	if (!area) {
@@ -66,11 +66,23 @@ export default async function callByDate(req: Request<any>, res: Response<any>) 
 	res.setHeader('Transfer-Encoding', 'chunked');
 	res.write('{ "data": [');
 
-	const NbCall = await Call.countDocuments({ campaign: campaign._id });
-	let i = 0;
-	await Call.find({ campaign: campaign._id })
+	const NbCall = await Call.countDocuments({
+		campaign: campaign._id,
+		satisfaction: {
+			$not: { $regex: /^\[hide\]/ }
+		},
+		$expr: { $ne: ['$satisfaction', null] }
+	});
+
+	await Call.find({
+		campaign: campaign._id,
+		satisfaction: {
+			$not: { $regex: /^\[hide\]/ }
+		},
+		$expr: { $ne: ['$satisfaction', null] }
+	})
 		.cursor()
-		.eachAsync(call => {
+		.eachAsync((call, i) => {
 			res.write(
 				JSON.stringify({
 					date: call.start ?? 0,
@@ -78,7 +90,6 @@ export default async function callByDate(req: Request<any>, res: Response<any>) 
 					satisfaction: call.satisfaction
 				}) + (NbCall - 1 == i ? '' : ',')
 			);
-			i++;
 		});
 	res.write(']}');
 	res.end();

@@ -56,7 +56,7 @@ describe('post on /admin/campaign/changeCallHours', () => {
 			newEndHours: '2022-10-10T10:00:00.000Z',
 			newStartHours: 'bad date',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body.OK).toBe(false);
@@ -69,7 +69,7 @@ describe('post on /admin/campaign/changeCallHours', () => {
 			newEndHours: 'bad date',
 			newStartHours: '2022-10-10T10:00:00.000Z',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body.OK).toBe(false);
@@ -95,7 +95,7 @@ describe('post on /admin/campaign/changeCallHours', () => {
 			newStartHours: '2022-10-10T10:00:00.000Z',
 			area: areaId,
 			CampaignId: new Types.ObjectId().toHexString(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.OK).toBe(false);
@@ -113,7 +113,7 @@ describe('post on /admin/campaign/changeCallHours', () => {
 			newEndHours: end,
 			area: areaId,
 			CampaignId: campaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.OK).toBe(true);

@@ -15,7 +15,7 @@ import { checkParameters, hashPasword } from '../../../tools/utils';
  * 	CampaignId: ObjectId,
  * 	adminCode: String,
  * 	area: ObjectId,
- *	"allreadyHaseded": boolean
+ *	"allreadyHashed": boolean
  * }
  *
  * @throws {400} Missing parameters
@@ -38,14 +38,14 @@ export default async function call(req: Request<any>, res: Response<any>) {
 				['CampaignId', 'ObjectId', true],
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
 	)
 		return;
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const area = await Area.findOne({ _id: { $eq: req.body.area }, adminPassword: { $eq: password } });
 	if (!area) {
@@ -64,54 +64,81 @@ export default async function call(req: Request<any>, res: Response<any>) {
 		return;
 	}
 
-	let totalCalled = Call.aggregate([
+	const result = await Call.aggregate([
 		{
 			$match: {
 				campaign: campaign._id
 			}
 		},
-		{ $sort: { start: -1 } },
 		{
-			$group: {
-				_id: '$client',
-				status: { $first: '$status' }
-			}
-		},
-		{
-			$match: {
-				status: false
+			$facet: {
+				totalCalled: [
+					{
+						$match: {
+							satisfaction: {
+								$not: { $regex: /^\[hide\]/ },
+								$ne: null
+							}
+						}
+					},
+					{
+						$sort: { start: -1 }
+					},
+					{
+						$group: {
+							_id: '$client',
+							status: { $first: '$status' }
+						}
+					},
+					{
+						$match: {
+							status: false
+						}
+					}
+				],
+				totalToRecall: [
+					{
+						$group: {
+							_id: '$client',
+							status: { $first: '$status' }
+						}
+					},
+					{
+						$match: {
+							status: true
+						}
+					}
+				],
+				totalValidate: [
+					{
+						$match: {
+							satisfaction: {
+								$regex: /^\[hide\]/,
+								$ne: null
+							}
+						}
+					}
+				],
+				inProgress: [
+					{
+						$count: 'inProgress'
+					}
+				]
 			}
 		}
 	]);
-	let totalToRecall = Call.aggregate([
-		{
-			$match: {
-				campaign: campaign._id
-			}
-		},
-		{ $sort: { start: -1 } },
-		{
-			$group: {
-				_id: '$client',
-				status: { $first: '$status' }
-			}
-		},
-		{
-			$match: {
-				status: true
-			}
-		}
-	]);
-	let inProgress = Call.countDocuments({ campaign: campaign._id, satisfaction: { $eq: 'In progress' } });
-	let totalUser = Client.countDocuments({ campaigns: campaign._id });
+
+	const totalUser = await Client.countDocuments({ campaigns: campaign });
+
 	res.status(200).send({
 		message: 'OK',
 		OK: true,
 		data: {
-			totalCalled: (await totalCalled).length,
-			totalToRecall: (await totalToRecall).length,
-			totalUser: await totalUser,
-			inProgress: await inProgress
+			totalCalled: result[0]?.totalCalled.length || 0,
+			totalValidate: result[0]?.totalValidate.length || 0,
+			totalToRecall: result[0]?.totalToRecall.length || 0,
+			totalUser: totalUser,
+			inProgress: result[0]?.inProgress?.length > 0 ? result[0].inProgress[0].inProgress : 0
 		}
 	});
 

@@ -53,7 +53,7 @@ describe('post on /admin/campaign/setActive', () => {
 			adminCode: 'wrong',
 			area: areaId,
 			active: true,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.message).toBe('Wrong admin code');
@@ -65,7 +65,7 @@ describe('post on /admin/campaign/setActive', () => {
 			area: areaId,
 			active: true,
 			campaign: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body.message).toBe('Campaign not found');
@@ -77,7 +77,7 @@ describe('post on /admin/campaign/setActive', () => {
 			area: areaId,
 			active: true,
 			campaign: CampaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('Campaign activated');
@@ -91,7 +91,7 @@ describe('post on /admin/campaign/setActive', () => {
 			area: areaId,
 			active: false,
 			campaign: CampaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('Campaign desactivated');

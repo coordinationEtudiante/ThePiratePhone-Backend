@@ -1,6 +1,11 @@
 import { Response } from 'express';
 import { sha512 } from 'js-sha512';
 import mongoose from 'mongoose';
+import stringSimilarity from 'string-similarity';
+
+import { Caller } from '../Models/Caller';
+import { Campaign } from '../Models/Campaign';
+import { Client } from '../Models/Client';
 import { log } from './log';
 
 /**
@@ -233,8 +238,8 @@ function checkPinCode(pinCode: string, res: Response<any>, orgin: string): boole
 	return true;
 }
 
-function hashPasword(password: string, allreadyHaseded: boolean, res: Response<any>): string | false {
-	if (!allreadyHaseded || password.length !== 128) {
+function hashPasword(password: string, allreadyHashed: boolean, res: Response<any>): string | false {
+	if (!allreadyHashed || password.length !== 128) {
 		return sha512(password).toString();
 	}
 
@@ -248,6 +253,89 @@ function hashPasword(password: string, allreadyHaseded: boolean, res: Response<a
 	return password;
 }
 
+async function partialSearchClient(
+	campaign: InstanceType<typeof Campaign> | null,
+	name: string,
+	firstName: string,
+	phoneFragmentStart?: string,
+	phoneFragmentEnd?: string
+): Promise<{
+	message: string;
+	OK: boolean;
+	data?: { [key: string]: any };
+}> {
+	const searchName = sanitizeString(name?.trim());
+	const searchFirstName = sanitizeString(firstName?.trim());
+	let phoneStart = sanitizeString(phoneFragmentStart?.trim() ?? '');
+	let phoneEnd = sanitizeString(phoneFragmentEnd?.trim() ?? '');
+
+	const query: any = { campaigns: campaign };
+
+	function escapeRegex(value: string): string {
+		return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	}
+
+	phoneStart = phoneStart ? escapeRegex(phoneStart) : '';
+	phoneEnd = phoneEnd ? escapeRegex(phoneEnd) : '';
+
+	if (phoneStart && phoneEnd) {
+		query.phone = { $regex: new RegExp(`^\\+?${phoneStart}\\d*${phoneEnd}$`, 'i') };
+	} else if (phoneStart) {
+		query.phone = { $regex: new RegExp(`^\\+?${phoneStart}\\d*`, 'i') };
+	} else if (phoneEnd) {
+		query.phone = { $regex: new RegExp(`+\\d*${phoneEnd}$`, 'i') };
+	}
+
+	const firstPassQuery = { ...query };
+	if (searchName) {
+		firstPassQuery.name = { $regex: new RegExp(`^${searchName}$`, 'i') };
+	}
+	if (searchFirstName) {
+		firstPassQuery.firstname = { $regex: new RegExp(`^${searchFirstName}$`, 'i') };
+	}
+
+	const clients = await Client.find(firstPassQuery, ['name', 'phone', 'firstname']).limit(1);
+
+	if (!clients || clients.length != 1) {
+		return await searchWithCursor();
+	} else {
+		return { message: 'found on first pass', OK: true, data: clients[0] };
+	}
+	// =========== deep search =========== \\
+	async function searchWithCursor() {
+		const cursor = Client.find(query, ['name', 'firstname', 'phone']).cursor();
+
+		let bestMatch: any = null;
+		let bestScore = 0;
+
+		for await (const client of cursor) {
+			let score = 0;
+			if (searchName && client.name) {
+				score += stringSimilarity.compareTwoStrings(searchName.toLowerCase(), client.name.toLowerCase());
+			}
+			if (searchFirstName && client.firstname) {
+				score += stringSimilarity.compareTwoStrings(
+					searchFirstName.toLowerCase(),
+					client.firstname.toLowerCase()
+				);
+			}
+
+			if (score > bestScore) {
+				bestScore = score;
+				bestMatch = client;
+			}
+
+			if (score >= 1.8) break;
+		}
+
+		if (bestMatch && bestScore >= 0.5) {
+			return { message: 'found on second pass', OK: true, data: bestMatch };
+		} else {
+			return { message: 'no client found', OK: false };
+		}
+	}
+}
+
 export {
 	checkParameters,
 	checkPinCode,
@@ -256,6 +344,7 @@ export {
 	getFileName,
 	hashPasword,
 	humainPhone,
+	partialSearchClient,
 	phoneNumberCheck,
 	sanitizeString
 };

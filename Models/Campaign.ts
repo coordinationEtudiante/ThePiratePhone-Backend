@@ -65,7 +65,8 @@ const CampaignSchema = new mongoose.Schema({
 		require: true,
 		default: [
 			{ name: 'À rappeler', toRecall: true },
-			{ name: 'À retirer', toRecall: false }
+			{ name: 'À retirer', toRecall: false },
+			{ name: '[hide] validate by API', toRecall: false }
 		]
 	},
 	sortGroup: {

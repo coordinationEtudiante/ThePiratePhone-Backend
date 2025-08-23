@@ -17,7 +17,7 @@ export default async function sendSms(req: Request<any>, res: Response<any>) {
 			[
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
-				['allreadyHaseded', 'boolean', true],
+				['allreadyHashed', 'boolean', true],
 				['message', 'string']
 			],
 			__filename
@@ -51,7 +51,7 @@ export default async function sendSms(req: Request<any>, res: Response<any>) {
 		}
 	});
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	const area = await Area.findOne({ _id: { $eq: req.body.area }, adminPassword: { $eq: password } }, ['adminPhone']);
 	if (!area) {
 		res.status(404).send({ message: 'no area found, or bad password', OK: false });

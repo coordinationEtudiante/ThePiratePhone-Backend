@@ -39,6 +39,7 @@ import removeClient from './router/admin/client/removeClient';
 import SearchClientByName from './router/admin/client/searchByName';
 import SearchClientByPhone from './router/admin/client/searchByPhone';
 import searchComplete from './router/admin/client/searchComplete';
+import validateByAPI from './router/admin/client/validateByAPI';
 import loginAdmin from './router/admin/login';
 import call from './router/admin/stats/call';
 import callByDate from './router/admin/stats/callByDate';
@@ -89,6 +90,7 @@ router.post('/admin/client/removeClients', removeAllClients);
 router.post('/admin/client/createClient', createClient);
 router.post('/admin/client/clientInfo', clientInfo);
 router.post('/admin/client/exportClientsCsv', exportClientCsv);
+router.post('/admin/client/validateByAPI', validateByAPI);
 
 //admin/area
 router.post('/admin/area/changeName', ChangeAreaName);

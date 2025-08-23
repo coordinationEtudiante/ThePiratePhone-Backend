@@ -80,7 +80,8 @@ describe('post on /admin/login', () => {
 				actualCampaignCallPermited: true,
 				actualCampaignStatus: [
 					{ name: 'À rappeler', toRecall: true },
-					{ name: 'À retirer', toRecall: false }
+					{ name: 'À retirer', toRecall: false },
+					{ name: '[hide] validate by API', toRecall: false }
 				]
 			},
 			OK: true
@@ -91,7 +92,7 @@ describe('post on /admin/login', () => {
 	it('should return 200 if correct admin code with hash', async () => {
 		const res = await request(app)
 			.post('/admin/login')
-			.send({ adminCode: adminPassword, area: areaId, allreadyHaseded: true });
+			.send({ adminCode: adminPassword, area: areaId, allreadyHashed: true });
 		expect(res.status).toBe(200);
 		expect(res.body).toMatchObject({
 			message: 'OK',
@@ -105,7 +106,8 @@ describe('post on /admin/login', () => {
 				actualCampaignCallPermited: true,
 				actualCampaignStatus: [
 					{ name: 'À rappeler', toRecall: true },
-					{ name: 'À retirer', toRecall: false }
+					{ name: 'À retirer', toRecall: false },
+					{ name: '[hide] validate by API', toRecall: false }
 				]
 			},
 			OK: true

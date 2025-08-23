@@ -63,7 +63,7 @@ describe('post on /admin/campaign/changeScript', () => {
 			adminCode,
 			newScript: 'newScript',
 			area: areaId,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			CampaignId: new Types.ObjectId()
 		});
 		expect(res.status).toBe(401);
@@ -75,7 +75,7 @@ describe('post on /admin/campaign/changeScript', () => {
 			adminCode,
 			newScript: ' ',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.message).toBe('Wrong script id');
@@ -86,7 +86,7 @@ describe('post on /admin/campaign/changeScript', () => {
 			adminCode: 'password',
 			newScript: 'newScript1',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('OK');
@@ -98,7 +98,7 @@ describe('post on /admin/campaign/changeScript', () => {
 			adminCode,
 			newScript: 'newScript',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('OK');

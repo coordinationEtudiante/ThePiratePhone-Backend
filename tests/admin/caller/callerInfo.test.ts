@@ -67,7 +67,7 @@ describe('post on /admin/caller/callerInfo', () => {
 			adminCode: adminCode,
 			phone: 'invalid',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body).toHaveProperty('message', 'Wrong phone number');
@@ -78,7 +78,7 @@ describe('post on /admin/caller/callerInfo', () => {
 			adminCode: adminCode,
 			phone: '+33634567890',
 			area: new mongoose.Types.ObjectId(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body).toHaveProperty('message', 'no area found');
@@ -89,7 +89,7 @@ describe('post on /admin/caller/callerInfo', () => {
 			adminCode: adminCode,
 			phone: '+33634567891',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body).toHaveProperty('message', 'no caller found');
@@ -130,7 +130,7 @@ describe('post on /admin/caller/callerInfo', () => {
 			adminCode: adminCode,
 			phone: '+33634567892',
 			area: Area2Id,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body).toHaveProperty('message', 'no campaign active');
@@ -141,7 +141,7 @@ describe('post on /admin/caller/callerInfo', () => {
 			adminCode: adminCode,
 			phone: '+33634567890',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		const reg = new RegExp(`{

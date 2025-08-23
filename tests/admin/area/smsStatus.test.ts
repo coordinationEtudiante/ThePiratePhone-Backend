@@ -34,7 +34,7 @@ describe('post on /admin/area/smsStatus', () => {
 		const response = await request(app).post('/admin/area/smsStatus').send({
 			adminCode: 'password',
 			area: areaId?.toString(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 
 		expect(response.status).toBe(200);
@@ -48,7 +48,7 @@ describe('post on /admin/area/smsStatus', () => {
 		const response = await request(app).post('/admin/area/smsStatus').send({
 			adminCode: 'bad',
 			area: areaId?.toString(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 
 		expect(response.status).toBe(404);
@@ -61,7 +61,7 @@ describe('post on /admin/area/smsStatus', () => {
 		const response = await request(app).post('/admin/area/smsStatus').send({
 			adminCode: 'password',
 			area: areaId?.toString(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 
 		expect(response.status).toBe(200);

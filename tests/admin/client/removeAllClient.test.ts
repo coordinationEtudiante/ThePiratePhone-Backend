@@ -73,7 +73,7 @@ describe('post on /admin/client/removeClients', () => {
 			adminCode,
 			area: areaId,
 			CampaignId: new Types.ObjectId(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toEqual(401);
 		expect(res.body).toEqual({ message: 'Wrong campaign id', OK: false });
@@ -84,7 +84,7 @@ describe('post on /admin/client/removeClients', () => {
 			adminCode,
 			area: areaId,
 			CampaignId: campaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toEqual(200);
 		expect(res.body).toEqual({ message: 'OK', OK: true });

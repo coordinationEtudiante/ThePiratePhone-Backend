@@ -47,7 +47,7 @@ describe(' post on /admin/campaign/listCampaign', () => {
 		const res = await request(app).post('/admin/campaign/listCampaign').send({
 			adminCode,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body.message).toBe('No campaign found');

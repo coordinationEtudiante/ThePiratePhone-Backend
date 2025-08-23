@@ -74,7 +74,7 @@ describe('post on /admin/client/removeClient', () => {
 			adminCode,
 			area: areaId,
 			phone: 'wrongPhone',
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body.OK).toBe(false);
@@ -85,7 +85,7 @@ describe('post on /admin/client/removeClient', () => {
 			adminCode,
 			area: new Types.ObjectId(),
 			phone: '+33134567890',
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.OK).toBe(false);
@@ -97,7 +97,7 @@ describe('post on /admin/client/removeClient', () => {
 			area: areaId,
 			phone: '+33134567890',
 			CampaignId: new Types.ObjectId(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.OK).toBe(false);
@@ -108,7 +108,7 @@ describe('post on /admin/client/removeClient', () => {
 			adminCode,
 			area: areaId,
 			phone: '+33134567891',
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body.OK).toBe(false);
@@ -119,7 +119,7 @@ describe('post on /admin/client/removeClient', () => {
 			adminCode,
 			area: areaId,
 			phone: '+33134567890',
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.OK).toBe(true);
@@ -148,7 +148,7 @@ describe('post on /admin/client/removeClient', () => {
 			adminCode,
 			area: areaId,
 			phone: '+33134567892',
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.OK).toBe(true);
