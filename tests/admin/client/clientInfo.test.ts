@@ -101,7 +101,7 @@ describe('post on /admin/client/clientInfo', () => {
 			adminCode: adminPassword,
 			area: areaId,
 			campaign: new mongoose.Types.ObjectId(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body.message).toBe('Campaign not found');
@@ -112,7 +112,7 @@ describe('post on /admin/client/clientInfo', () => {
 			adminCode: adminPassword,
 			area: areaId,
 			campaign: campaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body.message).toBe('Client not found');
@@ -123,7 +123,7 @@ describe('post on /admin/client/clientInfo', () => {
 			adminCode: adminPassword,
 			area: areaId,
 			campaign: campaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('no call found for this client');
@@ -152,7 +152,7 @@ describe('post on /admin/client/clientInfo', () => {
 			adminCode: adminPassword,
 			area: areaId,
 			campaign: campaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.OK).toBe(true);

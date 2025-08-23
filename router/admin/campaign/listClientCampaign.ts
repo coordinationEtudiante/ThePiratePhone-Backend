@@ -16,7 +16,7 @@ import { checkParameters, hashPasword } from '../../../tools/utils';
  *	skip?: number,
  *	limit?: number,
  *	area: string,
- * 	"allreadyHaseded": boolean
+ * 	"allreadyHashed": boolean
  * }
  *
  *	@throws {400} - Missing parameters
@@ -42,13 +42,13 @@ export default async function listClientCampaign(req: Request<any>, res: Respons
 				['skip', 'number', true],
 				['limit', 'number', true],
 				['area', 'ObjectId'],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
 	)
 		return;
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const area = await Area.findOne({ adminPassword: { $eq: password }, _id: { $eq: req.body.area } });
 	if (!area) {

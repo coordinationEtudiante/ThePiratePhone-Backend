@@ -65,7 +65,7 @@ describe(' post on /admin/campaign/listCallerCampaign', () => {
 			adminCode,
 			area: areaId,
 			CampaignId: new Types.ObjectId(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.message).toBe('Wrong campaign id');
@@ -76,7 +76,7 @@ describe(' post on /admin/campaign/listCallerCampaign', () => {
 			adminCode,
 			area: areaId,
 			CampaignId: CampaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body.message).toBe('No callers found');
@@ -108,7 +108,7 @@ describe(' post on /admin/campaign/listCallerCampaign', () => {
 			adminCode,
 			area: areaId,
 			CampaignId: CampaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('message', 'OK');

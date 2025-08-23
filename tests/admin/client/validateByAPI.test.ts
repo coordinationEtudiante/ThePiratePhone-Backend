@@ -89,7 +89,7 @@ describe('post on /admin/client/validateByAPI', () => {
 	it('should works', async () => {
 		const res = await request(app).post('/admin/client/validateByAPI').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'ZRAIKA',
 			firstName: 'Romane',
 			comment: 'auto-validate by test suite1',

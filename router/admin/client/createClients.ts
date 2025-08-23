@@ -13,7 +13,7 @@ import { checkParameters, clearPhone, hashPasword, phoneNumberCheck, sanitizeStr
  * 	"adminCode": string,
  * 	"area": string,
  * 	"data": [{phone:string, name?:string, firstname?:string, institution?:string, priority?:string, firstIntegration?:date, integrationReason?:string}],
- * 	"allreadyHaseded": boolean
+ * 	"allreadyHashed": boolean
  * 	"defaultReason": string
  * }
  * @throws {400}: missing parameters,
@@ -35,7 +35,7 @@ export default async function createClients(req: Request<any>, res: Response<any
 			[
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
-				['allreadyHaseded', 'boolean', true],
+				['allreadyHashed', 'boolean', true],
 				['defaultReason', 'string', true]
 			],
 			ip
@@ -78,7 +78,7 @@ export default async function createClients(req: Request<any>, res: Response<any
 		return;
 	}
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 
 	const area = await Area.findOne(

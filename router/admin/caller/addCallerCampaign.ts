@@ -15,7 +15,7 @@ import { checkParameters, clearPhone, hashPasword } from '../../../tools/utils';
  * 	adminCode: string,
  * 	area: string,
  * 	campaign: string,
- * 	"allreadyHaseded": boolean
+ * 	"allreadyHashed": boolean
  * }
  *
  * @throws {400} if missing parameters
@@ -41,14 +41,14 @@ export default async function addCallerCampaign(req: Request<any>, res: Response
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
 				['campaign', 'string'],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
 	)
 		return;
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const area = await Area.findOne({ adminPassword: { $eq: password }, _id: { $eq: req.body.area } }, [
 		'name',

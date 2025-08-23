@@ -82,7 +82,7 @@ describe('post on /admin/client/searchComplete', () => {
 	it('should works', async () => {
 		const res = await request(app).post('/admin/client/searchComplete').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'ZRAIKA',
 			firstName: 'Romane',
 			area: areaId
@@ -99,7 +99,7 @@ describe('post on /admin/client/searchComplete', () => {
 	it('should works with phoneStart', async () => {
 		const res = await request(app).post('/admin/client/searchComplete').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'ZRAIKA',
 			firstName: 'Romane',
 			phoneStart: '+3313',
@@ -117,7 +117,7 @@ describe('post on /admin/client/searchComplete', () => {
 	it('should works with phoneEnd', async () => {
 		const res = await request(app).post('/admin/client/searchComplete').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'ZRAIKA',
 			firstName: 'Romane',
 			phoneEnd: '90',
@@ -135,7 +135,7 @@ describe('post on /admin/client/searchComplete', () => {
 	it('should works with phoneStart and phoneEnd', async () => {
 		const res = await request(app).post('/admin/client/searchComplete').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'ZRAIKA',
 			firstName: 'Romane',
 			phoneStart: '+3313',
@@ -154,7 +154,7 @@ describe('post on /admin/client/searchComplete', () => {
 	it('should works with invalid case', async () => {
 		const res = await request(app).post('/admin/client/searchComplete').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'ZrAiKa',
 			firstName: 'rOmAnE',
 			area: areaId
@@ -171,7 +171,7 @@ describe('post on /admin/client/searchComplete', () => {
 	it('should works with invalid case and phone', async () => {
 		const res = await request(app).post('/admin/client/searchComplete').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'ZrAiKa',
 			firstName: 'rOmAnE',
 			phoneStart: '+3313',
@@ -190,7 +190,7 @@ describe('post on /admin/client/searchComplete', () => {
 	it('should works with phoneStart and phoneEnd second pass', async () => {
 		const res = await request(app).post('/admin/client/searchComplete').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'ZAIKA',
 			firstName: 'Romane',
 			phoneStart: '+3313',
@@ -209,7 +209,7 @@ describe('post on /admin/client/searchComplete', () => {
 	it('should works with second pass', async () => {
 		const res = await request(app).post('/admin/client/searchComplete').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'ZAIKA',
 			firstName: 'Romane',
 			area: areaId
@@ -226,7 +226,7 @@ describe('post on /admin/client/searchComplete', () => {
 	it('should works with invalid case second pass', async () => {
 		const res = await request(app).post('/admin/client/searchComplete').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'ZAiKa',
 			firstName: 'rOmAnE',
 			area: areaId
@@ -243,7 +243,7 @@ describe('post on /admin/client/searchComplete', () => {
 	it('should return 404 if no client found', async () => {
 		const res = await request(app).post('/admin/client/searchComplete').send({
 			adminCode,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			name: 'searchCompleteTest',
 			firstName: 'searchCompleteTest',
 			area: areaId

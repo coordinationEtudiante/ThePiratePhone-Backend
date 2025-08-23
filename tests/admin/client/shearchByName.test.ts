@@ -80,7 +80,7 @@ describe('post on /admin/client/searchByName', () => {
 			adminCode: adminCode,
 			name: 'searchByNameTest',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.OK).toBe(true);

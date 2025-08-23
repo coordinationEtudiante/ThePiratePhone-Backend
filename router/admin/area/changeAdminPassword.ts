@@ -14,7 +14,7 @@ import { sha512 } from 'js-sha512';
  * 	"adminCode": string,
  * 	"area": mongoDBID,
  * 	"newPassword": string,
- * 	"allreadyHaseded": boolean
+ * 	"allreadyHashed": boolean
  * }
  *
  * @throws {400}: new password is not a hash
@@ -36,7 +36,7 @@ export default async function ChangeAdminPassword(req: Request<any>, res: Respon
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
 				['newPassword', 'string'],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			ip
 		)
@@ -56,7 +56,7 @@ export default async function ChangeAdminPassword(req: Request<any>, res: Respon
 		return;
 	}
 
-	if (!req.body.allreadyHaseded || req.body.newPassword.length != 128) {
+	if (!req.body.allreadyHashed || req.body.newPassword.length != 128) {
 		//create hash
 		req.body.newPassword = sha512(req.body.newPassword);
 	} else {
@@ -67,7 +67,7 @@ export default async function ChangeAdminPassword(req: Request<any>, res: Respon
 		}
 	}
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const update = await Area.updateOne(
 		{ _id: { $eq: req.body.area }, adminPassword: { $eq: password } },

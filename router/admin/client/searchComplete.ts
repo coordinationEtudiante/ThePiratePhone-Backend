@@ -43,14 +43,14 @@ export default async function searchComplete(req: Request<any>, res: Response<an
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
 				['CampaignId', 'string', true],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
 	)
 		return;
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const area = await Area.findOne({ adminPassword: { $eq: password }, _id: { $eq: req.body.area } }, ['_id']);
 	if (!area) {

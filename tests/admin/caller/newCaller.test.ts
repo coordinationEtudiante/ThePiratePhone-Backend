@@ -107,7 +107,7 @@ describe('post on /admin/caller/createCaller', () => {
 			phone: '+33223456782',
 			pinCode: '1234',
 			name: 'caller',
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('message', 'Caller caller (+33223456782) created');

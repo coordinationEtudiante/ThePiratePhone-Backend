@@ -64,7 +64,7 @@ describe('post on /admin/campaign/changeNumberMaxCall', () => {
 			newNumberMaxCall: 1,
 			area: areaId,
 			CampaignId: new Types.ObjectId(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.message).toBe('Wrong campaign id');
@@ -75,7 +75,7 @@ describe('post on /admin/campaign/changeNumberMaxCall', () => {
 			adminCode,
 			newNumberMaxCall: NaN,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body.message).toBe('Missing parameters (newNumberMaxCall:number)');
@@ -86,7 +86,7 @@ describe('post on /admin/campaign/changeNumberMaxCall', () => {
 			adminCode,
 			newNumberMaxCall: 0,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body.message).toBe('invalid number max call');
@@ -108,7 +108,7 @@ describe('post on /admin/campaign/changeNumberMaxCall', () => {
 			adminCode,
 			newNumberMaxCall: 1,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('OK');

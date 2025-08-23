@@ -74,7 +74,7 @@ describe('post on /admin/caller/addCallerCampaign', () => {
 			adminCode: adminPassword,
 			area: areaId,
 			campaign: campaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body.message).toBe('Caller not found');
@@ -92,7 +92,7 @@ describe('post on /admin/caller/addCallerCampaign', () => {
 			adminCode: adminPassword,
 			area: areaId,
 			campaign: campaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 
 		expect(res.status).toBe(200);
@@ -130,7 +130,7 @@ describe('post on /admin/caller/addCallerCampaign', () => {
 			adminCode: adminPassword,
 			area: areaId,
 			campaign: campaignId2,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('Caller added to campaign');

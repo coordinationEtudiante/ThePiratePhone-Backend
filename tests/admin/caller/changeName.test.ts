@@ -107,7 +107,7 @@ describe('post on /admin/caller/changeName', () => {
 			newName: 'newName',
 			phone: '+33134567890',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(response.status).toBe(200);
 		expect(response.body).toMatchObject({ message: 'Caller name changed', OK: true });

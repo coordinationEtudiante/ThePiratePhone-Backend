@@ -46,14 +46,14 @@ export default async function validateByAPI(req: Request<any>, res: Response<any
 				['phoneFragmentStart', 'string', true],
 				['phoneFragmentEnd', 'string', true],
 				['CampaignId', 'string', true],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
 	)
 		return;
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const area = await Area.findOne({ adminPassword: { $eq: password }, _id: { $eq: req.body.area } }, ['_id']);
 	if (!area) {
@@ -93,6 +93,7 @@ export default async function validateByAPI(req: Request<any>, res: Response<any
 
 	if (allreadyCalled) {
 		res.status(200).send({ message: 'this client is already called by an reel caller', OK: true });
+		return;
 	}
 
 	const APICaller = await getApiCaller();

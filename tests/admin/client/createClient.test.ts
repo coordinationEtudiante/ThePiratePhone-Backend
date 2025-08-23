@@ -92,7 +92,7 @@ describe('post on /admin/client/createClient', () => {
 			name: 'createClienttest',
 			adminCode: adminPassword,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body.message).toBe('Wrong phone number');
@@ -104,7 +104,7 @@ describe('post on /admin/client/createClient', () => {
 			name: 'createClienttest',
 			adminCode: adminPassword,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(422);
 		expect(res.body.message).toBe('User already exist');
@@ -118,7 +118,7 @@ describe('post on /admin/client/createClient', () => {
 			firstName: 'createClienttest',
 			institution: 'createClienttest',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		const client = await Client.findOne({ phone: '+33134567891' });
@@ -135,7 +135,7 @@ describe('post on /admin/client/createClient', () => {
 				firstName: 'createClienttest2',
 				institution: 'createClienttest2',
 				area: areaId,
-				allreadyHaseded: true,
+				allreadyHashed: true,
 				priority: [{ campaign: campaignId, id: 'md4rye5b' }]
 			});
 		expect(res.status).toBe(200);
@@ -151,7 +151,7 @@ describe('post on /admin/client/createClient', () => {
 			firstName: 'createClienttestUpdated',
 			institution: 'createClienttestUpdated',
 			area: areaId,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			updateKey: clientId,
 			updateIfExist: true
 		});
@@ -170,7 +170,7 @@ describe('post on /admin/client/createClient', () => {
 			firstName: 'createClienttestUpdated',
 			institution: 'createClienttestUpdated',
 			area: areaId,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			updateKey: clientId,
 			updateIfExist: true
 		});

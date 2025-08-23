@@ -40,7 +40,7 @@ describe(' post on /admin/createCampaign', () => {
 			password: 'password',
 			area: areaId,
 			satisfactions: 'satisfaction',
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body.message).toBe('Invalid satisfaction, satisfactions must be a array<string>');
@@ -56,7 +56,7 @@ describe(' post on /admin/createCampaign', () => {
 				password: 'password',
 				area: areaId,
 				satisfactions: [1],
-				allreadyHaseded: true
+				allreadyHashed: true
 			});
 		expect(res.status).toBe(400);
 		expect(res.body.message).toBe('Invalid satisfaction, satisfactions must be a array<string>');
@@ -68,7 +68,7 @@ describe(' post on /admin/createCampaign', () => {
 			script: 'createCampaignTest',
 			password: 'password',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.message).toBe('Wrong admin code');
@@ -92,7 +92,7 @@ describe(' post on /admin/createCampaign', () => {
 			script: 'createCampaignTest4',
 			password: 'password',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(400);
 		expect(res.body.message).toBe('Campaign already exist');
@@ -105,7 +105,7 @@ describe(' post on /admin/createCampaign', () => {
 			script: 'createCampaignTest2',
 			password: 'password',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('Campaign created');

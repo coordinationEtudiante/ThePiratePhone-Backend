@@ -52,7 +52,7 @@ describe('post on /admin/campaign/setSatisfaction', () => {
 		const res = await request(app).post('/admin/campaign/setSatisfaction').send({
 			adminCode,
 			area: areaId,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			satisfactions: 'notAnArray'
 		});
 		expect(res.status).toBe(400);
@@ -62,7 +62,7 @@ describe('post on /admin/campaign/setSatisfaction', () => {
 		const res = await request(app).post('/admin/campaign/setSatisfaction').send({
 			adminCode: 'wrong',
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.message).toBe('Wrong admin code');
@@ -73,7 +73,7 @@ describe('post on /admin/campaign/setSatisfaction', () => {
 			adminCode,
 			area: areaId,
 			CampaignId: new Types.ObjectId().toHexString(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.message).toBe('Wrong campaign id');
@@ -85,7 +85,7 @@ describe('post on /admin/campaign/setSatisfaction', () => {
 			.send({
 				adminCode,
 				area: areaId,
-				allreadyHaseded: true,
+				allreadyHashed: true,
 				satisfactions: [42]
 			});
 		expect(res.status).toBe(400);
@@ -100,7 +100,7 @@ describe('post on /admin/campaign/setSatisfaction', () => {
 			.send({
 				adminCode,
 				area: areaId,
-				allreadyHaseded: true,
+				allreadyHashed: true,
 				satisfactions: [{ name: '[hide] validate by API', toRecall: false }]
 			});
 		expect(res.status).toBe(400);
@@ -115,7 +115,7 @@ describe('post on /admin/campaign/setSatisfaction', () => {
 			.send({
 				adminCode,
 				area: areaId,
-				allreadyHaseded: true,
+				allreadyHashed: true,
 				satisfactions: [
 					{ name: 'satisfaction1', toRecall: true },
 					{ name: 'satisfaction2', toRecall: true }

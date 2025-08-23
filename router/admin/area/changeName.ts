@@ -34,7 +34,7 @@ export default async function ChangeName(req: Request<any>, res: Response<any>) 
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
 				['newName', 'string'],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
@@ -48,7 +48,7 @@ export default async function ChangeName(req: Request<any>, res: Response<any>) 
 	}
 
 	req.body.newName = sanitizeString(req.body.newName);
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const update = await Area.updateOne(
 		{ _id: { $eq: req.body.area }, adminPassword: password },

@@ -63,7 +63,7 @@ describe('post on /admin/client/exportClientsCsv', () => {
 			adminCode,
 			area: areaId,
 			CampaignId: new Types.ObjectId(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toEqual(401);
 		expect(res.body).toEqual({ message: 'Wrong campaign id', OK: false });
@@ -73,7 +73,7 @@ describe('post on /admin/client/exportClientsCsv', () => {
 		const res = await request(app).post('/admin/client/exportClientsCsv').send({
 			adminCode,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toEqual(200);
 	});

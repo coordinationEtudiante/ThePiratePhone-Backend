@@ -238,8 +238,8 @@ function checkPinCode(pinCode: string, res: Response<any>, orgin: string): boole
 	return true;
 }
 
-function hashPasword(password: string, allreadyHaseded: boolean, res: Response<any>): string | false {
-	if (!allreadyHaseded || password.length !== 128) {
+function hashPasword(password: string, allreadyHashed: boolean, res: Response<any>): string | false {
+	if (!allreadyHashed || password.length !== 128) {
 		return sha512(password).toString();
 	}
 
@@ -286,15 +286,15 @@ async function partialSearchClient(
 		query.phone = { $regex: new RegExp(`+\\d*${phoneEnd}$`, 'i') };
 	}
 
-	const fistPassQuery = { ...query };
+	const firstPassQuery = { ...query };
 	if (searchName) {
-		fistPassQuery.name = { $regex: new RegExp(`^${searchName}$`, 'i') };
+		firstPassQuery.name = { $regex: new RegExp(`^${searchName}$`, 'i') };
 	}
 	if (searchFirstName) {
-		fistPassQuery.firstname = { $regex: new RegExp(`^${searchFirstName}$`, 'i') };
+		firstPassQuery.firstname = { $regex: new RegExp(`^${searchFirstName}$`, 'i') };
 	}
 
-	const clients = await Client.find(fistPassQuery, ['name', 'phone', 'firstname']).limit(1);
+	const clients = await Client.find(firstPassQuery, ['name', 'phone', 'firstname']).limit(1);
 
 	if (!clients || clients.length != 1) {
 		return await searchWithCursor();

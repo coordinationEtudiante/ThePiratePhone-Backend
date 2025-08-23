@@ -16,7 +16,7 @@ export default async function setPhone(req: Request<any>, res: Response<any>) {
 			[
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
@@ -48,7 +48,7 @@ export default async function setPhone(req: Request<any>, res: Response<any>) {
 		phoneCombo[1].trim()
 	]);
 
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	const area = await Area.updateOne(
 		{ _id: { $eq: req.body.area }, adminPassword: { $eq: password } },
 		{ adminPhone: req.body.phone },

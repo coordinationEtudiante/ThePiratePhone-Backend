@@ -110,7 +110,7 @@ describe('post on /admin/caller/listCaller', () => {
 		const res = await request(app).post('/admin/caller/listCaller').send({
 			adminCode: adminPassword,
 			area: areaId2,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('OK');

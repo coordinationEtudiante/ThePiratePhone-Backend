@@ -41,13 +41,13 @@ export default async function removeClient(req: Request<any>, res: Response<any>
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
 				['CampaignId', 'string', true],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
 	)
 		return;
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	req.body.phone = clearPhone(req.body.phone);
 	if (!phoneNumberCheck(req.body.phone)) {

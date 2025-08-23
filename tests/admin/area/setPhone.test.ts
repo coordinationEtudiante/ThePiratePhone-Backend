@@ -98,7 +98,7 @@ describe('POST /admin/area/setPhone', () => {
 				adminCode: adminPassword,
 				area: areaId,
 				phone: [['0701234567', 'John']],
-				allreadyHaseded: true
+				allreadyHashed: true
 			});
 		expect(res.status).toBe(200);
 		expect(res.body).toHaveProperty('OK', true);

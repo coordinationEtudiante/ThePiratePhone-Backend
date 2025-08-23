@@ -92,7 +92,7 @@ describe('post on /admin/login', () => {
 	it('should return 200 if correct admin code with hash', async () => {
 		const res = await request(app)
 			.post('/admin/login')
-			.send({ adminCode: adminPassword, area: areaId, allreadyHaseded: true });
+			.send({ adminCode: adminPassword, area: areaId, allreadyHashed: true });
 		expect(res.status).toBe(200);
 		expect(res.body).toMatchObject({
 			message: 'OK',

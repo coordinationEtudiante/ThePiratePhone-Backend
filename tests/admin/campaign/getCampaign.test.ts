@@ -63,7 +63,7 @@ describe(' post on /admin/campaign/getCampaign', () => {
 			adminCode,
 			area: areaId,
 			CampaignId: new Types.ObjectId(),
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(404);
 		expect(res.body.message).toBe('no campaign');
@@ -74,7 +74,7 @@ describe(' post on /admin/campaign/getCampaign', () => {
 			adminCode,
 			area: new Types.ObjectId(),
 			CampaignId: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(401);
 		expect(res.body.message).toBe('Wrong admin code');
@@ -85,7 +85,7 @@ describe(' post on /admin/campaign/getCampaign', () => {
 			adminCode,
 			area: areaId,
 			CampaignId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('OK');
@@ -96,7 +96,7 @@ describe(' post on /admin/campaign/getCampaign', () => {
 		const res = await request(app).post('/admin/campaign/getCampaign').send({
 			adminCode,
 			area: areaId,
-			allreadyHaseded: true
+			allreadyHashed: true
 		});
 		expect(res.status).toBe(200);
 		expect(res.body.message).toBe('OK');

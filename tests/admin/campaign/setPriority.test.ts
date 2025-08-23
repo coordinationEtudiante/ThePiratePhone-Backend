@@ -57,7 +57,7 @@ describe('post on /admin/campaign/setPriority', () => {
 		const res = await request(app).post('/admin/campaign/setPriority').send({
 			adminCode,
 			area: areaId,
-			allreadyHaseded: true,
+			allreadyHashed: true,
 			priority: 'notAnArray'
 		});
 		expect(res.status).toBe(400);
@@ -71,7 +71,7 @@ describe('post on /admin/campaign/setPriority', () => {
 			.send({
 				adminCode: 'wrong',
 				area: areaId,
-				allreadyHaseded: true,
+				allreadyHashed: true,
 				priority: [
 					{ name: 'prio2', id: 'md4ryvjl' },
 					{ name: 'prio1', id: 'md4rye5b' }
@@ -88,7 +88,7 @@ describe('post on /admin/campaign/setPriority', () => {
 				adminCode,
 				area: areaId,
 				CampaignId: new Types.ObjectId().toHexString(),
-				allreadyHaseded: true,
+				allreadyHashed: true,
 				priority: [
 					{ name: 'prio2', id: 'md4ryvjl' },
 					{ name: 'prio1', id: 'md4rye5b' }
@@ -104,7 +104,7 @@ describe('post on /admin/campaign/setPriority', () => {
 			.send({
 				adminCode,
 				area: areaId,
-				allreadyHaseded: true,
+				allreadyHashed: true,
 				priority: [42]
 			});
 		expect(res.status).toBe(400);
@@ -119,7 +119,7 @@ describe('post on /admin/campaign/setPriority', () => {
 			.send({
 				adminCode,
 				area: areaId,
-				allreadyHaseded: true,
+				allreadyHashed: true,
 				priority: [
 					{ name: 'prio2', id: 'md4ryvjl' },
 					{ name: 'prio1', id: 'md4rye5b' }

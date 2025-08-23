@@ -37,13 +37,13 @@ export default async function exportCallerCsv(req: Request<any>, res: Response<a
 				['adminCode', 'string'],
 				['area', 'ObjectId'],
 				['curentCamaign', 'boolean', true],
-				['allreadyHaseded', 'boolean', true]
+				['allreadyHashed', 'boolean', true]
 			],
 			__filename
 		)
 	)
 		return;
-	const password = hashPasword(req.body.adminCode, req.body.allreadyHaseded, res);
+	const password = hashPasword(req.body.adminCode, req.body.allreadyHashed, res);
 	if (!password) return;
 	const area = await Area.findOne({ adminPassword: { $eq: password }, _id: { $eq: req.body.area } });
 	if (!area) {
