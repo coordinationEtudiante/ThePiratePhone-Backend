@@ -76,7 +76,17 @@ export default async function getPhoneNumber(req: Request<any>, res: Response<an
 			_id: { $eq: req.body.campaign },
 			active: true
 		},
-		['script', 'callPermited', 'timeBetweenCall', 'nbMaxCallCampaign', 'active', 'status', 'sortGroup']
+		[
+			'script',
+			'callPermited',
+			'timeBetweenCall',
+			'nbMaxCallCampaign',
+			'active',
+			'status',
+			'sortGroup',
+			'sendEndCall',
+			'smsScript'
+		]
 	);
 
 	if (!campaign) {
@@ -299,7 +309,8 @@ export default async function getPhoneNumber(req: Request<any>, res: Response<an
 		status: campaign.status,
 		priority:
 			(campaign.sortGroup.find(group => group.id == (client[0] as any).priority[0].id) as any)?.name ??
-			'not found'
+			'not found',
+		smsScript: campaign.sendEndCall ? campaign.smsScript : undefined
 	});
 	log(`[${req.body.phone}, ${ip}] Client to call`, 'INFO', __filename);
 }
