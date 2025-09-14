@@ -77,6 +77,16 @@ const CampaignSchema = new mongoose.Schema({
 			{ name: 'prio2', id: 'md4ryvjl' },
 			{ name: 'default', id: '-1' }
 		]
+	},
+	smsScript: {
+		type: String,
+		require: true,
+		default: 'aucun script'
+	},
+	sendEndCall: {
+		type: Boolean,
+		require: true,
+		default: false
 	}
 });
 

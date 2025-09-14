@@ -30,6 +30,7 @@ import listClientCampaign from './router/admin/campaign/listClientCampaign';
 import setActive from './router/admin/campaign/setActive';
 import setPriority from './router/admin/campaign/setPriority';
 import setSatisfaction from './router/admin/campaign/setSatisfaction';
+import SetSendSms from './router/admin/campaign/setSendSms';
 import clientInfo from './router/admin/client/clientInfo';
 import createClient from './router/admin/client/createClient';
 import createClients from './router/admin/client/createClients';
@@ -126,6 +127,7 @@ router.post('/admin/campaign/getCampaign', getCampaign);
 router.post('/admin/campaign/changeScript', changeScript);
 router.post('/admin/campaign/setSatisfaction', setSatisfaction);
 router.post('/admin/campaign/setPriority', setPriority);
+router.post('/admin/campaign/setSendSms', SetSendSms);
 
 //admin/
 router.post('/admin/createCampaign', createCampaign);

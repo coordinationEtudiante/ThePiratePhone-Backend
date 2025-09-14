@@ -108,6 +108,7 @@ export default async function login(req: Request<any>, res: Response<any>) {
 				}
 			}
 		]);
+
 		if (
 			!campaignAvailable ||
 			campaignAvailable.length === 0 ||
