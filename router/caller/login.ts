@@ -103,6 +103,7 @@ export default async function login(req: Request<any>, res: Response<any>) {
 					callHoursStart: 1,
 					callHoursEnd: 1,
 					status: 1,
+					endTime: 1,
 					areaId: '$areaDetails._id',
 					areaName: '$areaDetails.name'
 				}

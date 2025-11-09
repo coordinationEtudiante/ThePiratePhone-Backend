@@ -87,6 +87,10 @@ const CampaignSchema = new mongoose.Schema({
 		type: Boolean,
 		require: true,
 		default: false
+	},
+	endTime: {
+		type: Date,
+		require: false
 	}
 });
 

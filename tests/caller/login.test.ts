@@ -34,7 +34,8 @@ beforeAll(async () => {
 			{ name: 'À rappeler', toRecall: true },
 			{ name: 'À retirer', toRecall: false }
 		],
-		password: 'password'
+		password: 'password',
+		endTime: new Date()
 	});
 	campaignId = (await Campaign.findOne({ name: 'loginTest' }))?._id;
 	await Caller.create({
@@ -107,6 +108,7 @@ describe('post on /caller/login', () => {
 		expect(res.body.data.caller.name).toBe('loginTest');
 		expect(res.body.data.caller.phone).toBe('+33434567901');
 		expect(res.body.data.campaignAvailable.length).toBe(1);
+		expect(res.body.data.campaignAvailable[0].endTime).toBeDefined();
 		expect(res.body.data.campaignAvailable[0].name).toBe('loginTest');
 		expect(res.body.data.campaignAvailable[0].callHoursStart).toBeDefined();
 		expect(res.body.data.campaignAvailable[0].callHoursEnd).toBeDefined();
