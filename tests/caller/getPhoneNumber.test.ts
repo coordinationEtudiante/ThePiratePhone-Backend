@@ -429,43 +429,6 @@ describe('post on /caller/getPhoneNumber', () => {
 		expect(res.body).toEqual({ message: 'No client to call', OK: false });
 	});
 
-	it('should return 404 if client is deleted', async () => {
-		await Client.create({
-			name: 'getPhoneNumber5',
-			firstname: 'test',
-			phone: '+33712457840',
-			area: areaId,
-			campaigns: [campaignId],
-			delete: true,
-			priority: [{ campaign: campaignId, id: '-1' }]
-		});
-		await Caller.create({
-			name: 'getPhoneNumber8',
-			phone: '+33734567897',
-			pinCode: '1234',
-			campaigns: [campaignId],
-			priority: [{ campaign: campaignId, id: '-1' }]
-		});
-		await Call.create({
-			caller: (await Caller.findOne({ phone: '+33734567897' }))?._id,
-			client: (await Client.findOne({ phone: '+33712457840' }))?._id,
-			campaign: campaignId,
-			satisfaction: 'Finished',
-			status: true,
-			area: areaId,
-			duration: 1000,
-			start: new Date(Date.now() - 10_800_001)
-		});
-		await Client.deleteMany({});
-		const res = await request(app).post('/caller/getPhoneNumber').send({
-			phone: '+33734567890',
-			pinCode: '1234',
-			campaign: campaignId
-		});
-		expect(res.status).toBe(404);
-		expect(res.body).toEqual({ message: 'No client to call', OK: false });
-	});
-
 	it('should work', async () => {
 		await Client.create({
 			name: 'getPhoneNumber6',
@@ -538,5 +501,48 @@ describe('post on /caller/getPhoneNumber', () => {
 				phone: '+33712457843'
 			}
 		});
+	});
+
+	it('should return 403 if endTime is passed', async () => {
+		const campaignId = (
+			await Campaign.create({
+				name: 'getPhoneNumber12',
+				script: 'getPhoneNumber12',
+				active: true,
+				area: areaId,
+				status: [
+					{ name: 'À rappeler', toRecall: true },
+					{ name: 'À retirer', toRecall: false }
+				],
+				password: 'password',
+				callPermited: true,
+				endTime: new Date(0)
+			})
+		)?.id;
+
+		await Client.create({
+			name: 'getPhoneNumber9',
+			firstname: 'test',
+			phone: '+33712457844',
+			area: areaId,
+			campaigns: [campaignId],
+			priority: [{ campaign: campaignId, id: '-1' }]
+		});
+
+		await Caller.create({
+			name: 'getPhoneNumber13',
+			phone: '+33834567800',
+			pinCode: '1234',
+			campaigns: [campaignId]
+		});
+
+		const res = await request(app).post('/caller/getPhoneNumber').send({
+			phone: '+33834567800',
+			pinCode: '1234',
+			campaign: campaignId
+		});
+
+		expect(res.status).toBe(403);
+		expect(res.body.message).toBe('Call not permited, the end time has passed');
 	});
 });

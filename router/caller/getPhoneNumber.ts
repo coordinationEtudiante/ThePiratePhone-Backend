@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import mongoose, { Types } from 'mongoose';
 
-import { Area } from '../../Models/Area';
 import { Call } from '../../Models/Call';
 import { Caller } from '../../Models/Caller';
 import { Campaign } from '../../Models/Campaign';
@@ -76,12 +75,24 @@ export default async function getPhoneNumber(req: Request<any>, res: Response<an
 			_id: { $eq: req.body.campaign },
 			active: true
 		},
-		['script', 'callPermited', 'timeBetweenCall', 'nbMaxCallCampaign', 'active', 'status', 'sortGroup']
+		['script', 'callPermited', 'timeBetweenCall', 'nbMaxCallCampaign', 'active', 'status', 'sortGroup', 'endTime']
 	);
 
 	if (!campaign) {
 		res.status(404).send({ message: 'Campaign not found or not active', OK: false });
 		log(`[!${req.body.phone}, ${ip}] Campaign not found or not active`, 'WARNING', __filename);
+		return;
+	}
+
+	if (campaign.endTime && new Date(campaign.endTime) < new Date()) {
+		campaign.callPermited = false;
+		res.status(403).send({ message: 'Call not permited, the end time has passed', OK: false });
+		log(
+			`[${req.body.phone}, ${ip}] Call not permited, the end time has passed. change state of campaign ${campaign.name}: ${campaign.id} callPermited to false`,
+			'WARNING',
+			__filename
+		);
+		await campaign.save();
 		return;
 	}
 
