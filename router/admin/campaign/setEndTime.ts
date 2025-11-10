@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
-import { Area } from 'Models/Area';
-import { Campaign } from 'Models/Campaign';
-import { log } from 'tools/log';
-import { checkParameters, hashPasword } from 'tools/utils';
 
-export default async function sendSms(req: Request<any>, res: Response<any>) {
+import { Area } from '../../../Models/Area';
+import { Campaign } from '../../../Models/Campaign';
+import { log } from '../../../tools/log';
+import { checkParameters, hashPasword } from '../../../tools/utils';
+
+export default async function setEndTime(req: Request<any>, res: Response<any>) {
 	const ip =
 		(Array.isArray(req.headers['x-forwarded-for'])
 			? req.headers['x-forwarded-for'][0]
@@ -18,7 +19,7 @@ export default async function sendSms(req: Request<any>, res: Response<any>) {
 				['area', 'ObjectId'],
 				['CampaignId', 'ObjectId', true],
 				['allreadyHashed', 'boolean', true],
-				['endTime', 'Date']
+				['endTime', 'string']
 			],
 			__filename
 		)
@@ -26,7 +27,7 @@ export default async function sendSms(req: Request<any>, res: Response<any>) {
 		return;
 
 	const newDate = new Date(req.body.endTime);
-	if (!newDate.toISOString() || isNaN(newDate.getTime())) {
+	if (isNaN(newDate.getTime()) || !newDate.toISOString()) {
 		res.status(400).send({ OK: false, message: `bad new date: ${newDate}` });
 		log(`[!${req.body.area}, ${ip}] bad new date result: ${newDate}`, 'WARNING', __filename);
 		return;
@@ -45,12 +46,10 @@ export default async function sendSms(req: Request<any>, res: Response<any>) {
 
 	campaign = await Campaign.findOneAndUpdate(
 		{
-			_id: req.body.CampaignId ? { $eq: req.body.CampaignId } : undefined,
 			area: area._id,
-			...(req.body.CampaignId ? {} : { active: true })
+			...(req.body.CampaignId ? { _id: { $eq: req.body.CampaignId } } : { active: true })
 		},
-		{ endTime: newDate },
-		{ projection: { _id: 1 } }
+		{ endTime: newDate }
 	);
 
 	if (!campaign) {
