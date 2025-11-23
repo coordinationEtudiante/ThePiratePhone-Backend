@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import mongoose, { Types } from 'mongoose';
 
-import { Area } from '../../Models/Area';
 import { Call } from '../../Models/Call';
 import { Caller } from '../../Models/Caller';
 import { Campaign } from '../../Models/Campaign';
@@ -23,6 +22,7 @@ import { checkParameters, checkPinCode, clearPhone, phoneNumberCheck } from '../
  * @throws {400}: Invalid phone number
  * @throws {403}: Invalid credential
  * @throws {403}: Call not permited
+ * @throws {403}: Call not permited, the end time has passed
  * @throws {403}: Campaign not active
  * @throws {404}: Campaign not found
  * @throws {404}: No client to call
