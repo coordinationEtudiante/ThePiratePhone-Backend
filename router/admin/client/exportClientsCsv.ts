@@ -97,6 +97,7 @@ export default async function exportClientCsv(req: Request<any>, res: Response<a
 		}
 		csvStream.write({
 			nom: client.name,
+			prenom: client.firstname,
 			telephone: humainPhone(client.phone),
 			statut: csvData.statut ?? 'Pas appelé·e',
 			resultat: csvData.resultat ?? '',
