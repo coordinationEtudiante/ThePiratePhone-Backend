@@ -76,10 +76,8 @@ export default async function removeAllClients(req: Request<any>, res: Response<
 		return;
 	}
 
-	// remove all clients in the campaign
-	const clients = await Client.deleteMany({
-		campaigns: campaign._id
-	});
+	// remove the campaign key from each client in the campaign
+	const clients = await Client.updateMany({ campaigns: campaign._id }, { $pull: { campaigns: campaign._id } });
 
 	if (!clients) {
 		res.status(500).send({ message: 'Error removing clients', OK: false });

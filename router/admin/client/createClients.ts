@@ -143,15 +143,17 @@ export default async function createClients(req: Request<any>, res: Response<any
 							phone,
 							name: sanitizeString(usr.name || 'unknown'),
 							firstname: sanitizeString(usr.firstname || ''),
+							priority: [{ campaign: campaign._id, id: priorityId }],
 							firstIntegration: (() => {
 								const date = new Date(usr.firstIntegration || '');
 								return isNaN(date.getTime()) ? Date.now() : date.getTime();
 							})(),
 							integrationReason:
-								sanitizeString(usr.integrationReason || '') ?? sanitizeString(req.body.defaultReason)
-						},
-						{ $push: { campaigns: campaign._id } }
+								sanitizeString(usr.integrationReason || '') ?? sanitizeString(req.body.defaultReason),
+							$push: { campaigns: campaign._id }
+						}
 					);
+					return true;
 				} else {
 					// client exist in this campaign, update name, firstnames and priority
 					await Client.updateOne(
@@ -160,7 +162,7 @@ export default async function createClients(req: Request<any>, res: Response<any
 							phone,
 							name: sanitizeString(usr.name || 'unknown'),
 							firstname: sanitizeString(usr.firstname || ''),
-							priority: [{ campaign: campaign._id, id: '-1' }],
+							priority: [{ campaign: campaign._id, id: priorityId }],
 							firstIntegration: (() => {
 								const date = new Date(usr.firstIntegration || '');
 								return isNaN(date.getTime()) ? Date.now() : date.getTime();
@@ -169,6 +171,7 @@ export default async function createClients(req: Request<any>, res: Response<any
 								sanitizeString(usr.integrationReason || '') ?? sanitizeString(req.body.defaultReason)
 						}
 					);
+					return true;
 				}
 			} catch (error: any) {
 				errors.push([usr.name || '' + ' ' + usr.firstname || '', phone, error.message]);
