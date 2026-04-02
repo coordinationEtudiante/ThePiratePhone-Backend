@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
-import { ObjectId } from 'mongodb';
 
 import { Area } from '../../../Models/Area';
-import { log } from '../../../tools/log';
 import { Caller } from '../../../Models/Caller';
+import { log } from '../../../tools/log';
 import { checkParameters, clearPhone, hashPasword } from '../../../tools/utils';
 
 /**
@@ -26,7 +25,7 @@ export default async function SearchByPhone(req: Request<any>, res: Response<any
 	const ip =
 		(Array.isArray(req.headers['x-forwarded-for'])
 			? req.headers['x-forwarded-for'][0]
-			: req.headers['x-forwarded-for']?.split(',')?.[0] ?? req.ip) ?? 'no IP';
+			: (req.headers['x-forwarded-for']?.split(',')?.[0] ?? req.ip)) ?? 'no IP';
 	if (
 		!checkParameters(
 			req.body,

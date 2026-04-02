@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { Call } from '../../Models/Call';
 import { Caller } from '../../Models/Caller';
 import { log } from '../../tools/log';
-import { checkParameters, clearPhone, phoneNumberCheck } from '../../tools/utils';
+import { checkParameters, clearPhone, getApiCaller, phoneNumberCheck } from '../../tools/utils';
 
 /**
  * get the top 5 callers in a campaign and our score
@@ -29,7 +29,7 @@ export default async function scoreBoard(req: Request<any>, res: Response<any>) 
 	const ip =
 		(Array.isArray(req.headers['x-forwarded-for'])
 			? req.headers['x-forwarded-for'][0]
-			: req.headers['x-forwarded-for']?.split(',')?.[0] ?? req.ip) ?? 'no IP';
+			: (req.headers['x-forwarded-for']?.split(',')?.[0] ?? req.ip)) ?? 'no IP';
 
 	if (
 		!checkParameters(
@@ -51,11 +51,15 @@ export default async function scoreBoard(req: Request<any>, res: Response<any>) 
 		log(`[!${req.body.phone}, ${ip}] Wrong phone number`, 'WARNING', __filename);
 		return;
 	}
+
 	const caller = await Caller.findOne({
 		phone: phone,
 		pinCode: { $eq: req.body.pinCode },
 		campaigns: { $eq: req.body.campaign }
 	});
+
+	const APICaller = await getApiCaller();
+
 	if (!caller) {
 		res.status(404).send({ message: 'Caller not found', OK: false });
 		log(`[!${req.body.phone}, ${ip}] Caller not found`, 'WARNING', __filename);
@@ -70,7 +74,10 @@ export default async function scoreBoard(req: Request<any>, res: Response<any>) 
 	}> = await Call.aggregate([
 		{
 			$match: {
-				campaign: mongoose.Types.ObjectId.createFromHexString(req.body.campaign)
+				$and: [
+					{ campaign: mongoose.Types.ObjectId.createFromHexString(req.body.campaign) },
+					{ caller: { $ne: APICaller._id } }
+				]
 			}
 		},
 		{

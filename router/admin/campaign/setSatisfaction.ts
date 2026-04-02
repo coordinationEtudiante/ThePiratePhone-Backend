@@ -28,7 +28,7 @@ export default async function setSatisfaction(req: Request<any>, res: Response<a
 	const ip =
 		(Array.isArray(req.headers['x-forwarded-for'])
 			? req.headers['x-forwarded-for'][0]
-			: req.headers['x-forwarded-for']?.split(',')?.[0] ?? req.ip) ?? 'no IP';
+			: (req.headers['x-forwarded-for']?.split(',')?.[0] ?? req.ip)) ?? 'no IP';
 	if (
 		!checkParameters(
 			req.body,
@@ -76,7 +76,7 @@ export default async function setSatisfaction(req: Request<any>, res: Response<a
 		!req.body.satisfactions.every(
 			(e: any) =>
 				typeof e?.name === 'string' &&
-				typeof e?.toRecall === 'boolean' &&
+				typeof e?.toRecall == 'boolean' &&
 				!e?.name.includes('[hide] validate by API')
 		)
 	) {

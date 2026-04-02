@@ -2,10 +2,9 @@ import { Request, Response } from 'express';
 
 import { Area } from '../../../Models/Area';
 import { Call } from '../../../Models/Call';
-import { Caller } from '../../../Models/Caller';
 import { Campaign } from '../../../Models/Campaign';
 import { log } from '../../../tools/log';
-import { checkParameters, hashPasword, partialSearchClient, sanitizeString } from '../../../tools/utils';
+import { checkParameters, getApiCaller, hashPasword, partialSearchClient, sanitizeString } from '../../../tools/utils';
 
 /**
  * Search for clients with name, fist name and patial phone
@@ -32,7 +31,7 @@ export default async function validateByAPI(req: Request<any>, res: Response<any
 	const ip =
 		(Array.isArray(req.headers['x-forwarded-for'])
 			? req.headers['x-forwarded-for'][0]
-			: req.headers['x-forwarded-for']?.split(',')?.[0] ?? req.ip) ?? 'no IP';
+			: (req.headers['x-forwarded-for']?.split(',')?.[0] ?? req.ip)) ?? 'no IP';
 	if (
 		!checkParameters(
 			req.body,
@@ -116,22 +115,4 @@ export default async function validateByAPI(req: Request<any>, res: Response<any
 
 	res.status(200).send({ message: 'this client has been validate', OK: true });
 	log(`[${req.body.area}, ${ip}] client ${result.data._id} has ben validate`, 'INFO', __filename);
-
-	async function getApiCaller() {
-		let caller: InstanceType<typeof Caller> | null = await Caller.findOne({
-			name: 'API Caller',
-			phone: '+33000000000',
-			pinCode: '1970'
-		});
-		if (!caller) {
-			caller = await new Caller({
-				name: 'API Caller',
-				phone: '+33000000000',
-				pinCode: '1970',
-				campaigns: await Campaign.find({}, [])
-			}).save();
-		}
-
-		return caller;
-	}
 }

@@ -4,7 +4,6 @@ import { Area } from '../../../Models/Area';
 import { Caller } from '../../../Models/Caller';
 import { log } from '../../../tools/log';
 import { checkParameters, hashPasword, sanitizeString } from '../../../tools/utils';
-import { Campaign } from '../../../Models/Campaign';
 
 function escapeRegExp(input: string): string {
 	return input.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -31,7 +30,7 @@ export default async function SearchByName(req: Request<any>, res: Response<any>
 	const ip =
 		(Array.isArray(req.headers['x-forwarded-for'])
 			? req.headers['x-forwarded-for'][0]
-			: req.headers['x-forwarded-for']?.split(',')?.[0] ?? req.ip) ?? 'no IP';
+			: (req.headers['x-forwarded-for']?.split(',')?.[0] ?? req.ip)) ?? 'no IP';
 	if (
 		!checkParameters(
 			req.body,

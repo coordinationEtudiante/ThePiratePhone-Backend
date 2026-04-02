@@ -3,10 +3,10 @@ import { sha512 } from 'js-sha512';
 import mongoose from 'mongoose';
 import stringSimilarity from 'string-similarity';
 
-import { Caller } from '../Models/Caller';
 import { Campaign } from '../Models/Campaign';
 import { Client } from '../Models/Client';
 import { log } from './log';
+import { Caller } from '../Models/Caller';
 
 /**
  * return the filename from file path
@@ -301,7 +301,9 @@ async function partialSearchClient(
 	} else {
 		return { message: 'found on first pass', OK: true, data: clients[0] };
 	}
+
 	// =========== deep search =========== \\
+
 	async function searchWithCursor() {
 		const cursor = Client.find(query, ['name', 'firstname', 'phone']).cursor();
 
@@ -336,6 +338,24 @@ async function partialSearchClient(
 	}
 }
 
+async function getApiCaller() {
+	let caller: InstanceType<typeof Caller> | null = await Caller.findOne({
+		name: 'API Caller',
+		phone: '+33000000000',
+		pinCode: '1970'
+	});
+	if (!caller) {
+		caller = await new Caller({
+			name: 'API Caller',
+			phone: '+33000000000',
+			pinCode: '1970',
+			campaigns: await Campaign.find({}, [])
+		}).save();
+	}
+
+	return caller;
+}
+
 export {
 	checkParameters,
 	checkPinCode,
@@ -346,5 +366,6 @@ export {
 	humainPhone,
 	partialSearchClient,
 	phoneNumberCheck,
-	sanitizeString
+	sanitizeString,
+	getApiCaller
 };
